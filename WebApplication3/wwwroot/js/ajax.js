@@ -1,16 +1,10 @@
 ﻿/**
- * The last used instance of collapsibleTableEditable
- */
-var lastCollapsibleTableEditableInstance = null;
-
-/**
- * Collection of generic ajax functions. Requires "custom.login.js"
+ * Collection of generic ajax functions
  */
 var AjaxUtilities = function ()
 {
     var that = this;
     var ajaxTimeout = 120000; // in [ms]
-    var loginEndpoint = 'api/oauth/token/';
 
     /**
      * The current application (e.g. "EQ")
@@ -144,6 +138,24 @@ var AjaxUtilities = function ()
                 ajaxErrorCallback(data, status, errorCallback);
             }
         });
+    };
+
+    this.getUrlParameter = function getUrlParameter(sParam)
+    {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++)
+        {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam)
+            {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
     };
 
     /**
@@ -338,41 +350,6 @@ var AjaxUtilities = function ()
      * Cache of the versioned api urls
      */
     var versionedApiUrls = {};
-
-    /**
-     * Gets a versioned api url (e.q. "<rootUrl>/V3/api/")
-     * @param {number} apiVersion Version of the api
-     * @returns {string} Versioned api url
-     */
-    this.GetVersionedApiUrl = function (apiVersion)
-    {
-        if (versionedApiUrls[apiVersion] == null)
-        {
-            versionedApiUrls[apiVersion] = this.GetApiRootUrl() + "V" + apiVersion + "/api/";
-        }
-
-        return versionedApiUrls[apiVersion];
-    };
-
-    /*
-     * Cache of the versioned urls
-     */
-    var versionedUrls = {};
-
-    /**
-     * Gets a versioned url (e.q. "<rootUrl>/V3/") based on the eq url
-     * @param {number} version Version of the url
-     * @returns {string} Versioned url
-     */
-    this.GetVersionedUrl = function (version)
-    {
-        if (versionedUrls[version] == null)
-        {
-            versionedUrls[version] = this.GetApiRootUrl() + "V" + version + "/";
-        }
-
-        return versionedUrls[version];
-    };
 
     /**
      * Get the error message from a failed request's response.

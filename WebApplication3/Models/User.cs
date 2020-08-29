@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace WebApplication2.AppCode.Models
@@ -14,5 +15,9 @@ namespace WebApplication2.AppCode.Models
         [JsonIgnore]
         [IgnoreDataMember]
         public string barcode { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public DateTime FirstViewDate { get; set; }
     }
 }

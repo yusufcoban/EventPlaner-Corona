@@ -1,48 +1,76 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>To-do CRUD</title>
-    <link rel="stylesheet" href="css/site.css" />
+    <title>Eventplaner</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <script src="https://unpkg.com/lodash@4.16.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/ajax.js" asp-append-version="true"></script>
 </head>
 <body>
-    <h1>To-do CRUD</h1>
-    <h3>Add</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="New to-do">
-        <input type="submit" value="Add">
-    </form>
-
-    <div id="editForm">
-        <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateItem()">
-            <input type="hidden" id="edit-id">
-            <input type="checkbox" id="edit-isComplete">
-            <input type="text" id="edit-name">
-            <input type="submit" value="Save">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
-        </form>
+    <div id="editor">
+        <template v-if="!barCodeGiven">
+            <div class="form-group mb-2">
+                <label for="" class="sr-only">
+                    Vorname
+                </label>
+                <input type="text" readonly class="form-control-plaintext" :value="currentUser.firstname">
+            </div>
+            <div class="form-group mb-2">
+                <label for="" class="sr-only">
+                    Nachname
+                </label>
+                <input type="text" readonly class="form-control-plaintext" :value="currentUser.lastname">
+            </div>
+            <form class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="" class="sr-only">
+                        Email
+                    </label>
+                    <input type="text" readonly class="form-control-plaintext" :value="currentUser.email">
+                </div>
+            </form>
+        </template>
+        <template v-else>
+            Hallo {{currentUser.firstname}} {{currentUser.lastname}}
+        </template>
     </div>
-
-    <p id="counter"></p>
-
-    <table>
-        <tr>
-            <th>Is Complete?</th>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tbody id="todos"></tbody>
-    </table>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="js/site.js" asp-append-version="true"></script>
-    <script src="js/ajax.js" asp-append-version="true"></script>
-
-    <script type="text/javascript">
-        getItems();
+    <script>
+        new Vue({
+            el: "#editor",
+            data: {
+                currentUser: {},
+                uriBarcode: '/User/byBarcode?barcode=',
+                barCodeGiven: false
+            },
+            computed: {
+            },
+            mounted()
+            {
+                // fetch data
+                this.preLoadUser();
+            },
+            methods: {
+                preLoadUser: function ()
+                {
+                    var that = this;
+                    var barcode = ajaxUtilities.getUrlParameter('barcode');
+                    if (barcode != null)
+                    {
+                        that.barCodeGiven = true;
+                        var promise = ajaxUtilities.GetJson(that.uriBarcode + barcode);
+                        $.when(promise).done(function (result)
+                        {
+                            that.currentUser = result;
+                        }).fail(function ()
+                        {
+                            debugger;
+                        });
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

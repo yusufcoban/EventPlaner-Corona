@@ -1,14 +1,21 @@
 ﻿const uri = '/User/list';
 let todos = [];
+var currentUser = {};
 
 function getItems()
 {
-    var promise = ajaxUtilities.GetJson(uri);
-    $.when(promise).done(function (result)
+    var barcode = ajaxUtilities.getUrlParameter('barcode');
+    if (barcode != null)
     {
-        todos = result;
-    }).fail(function ()
-    {
-        debugger;
-    });
+        var promise = ajaxUtilities.GetJson(uriBarcode + barcode);
+        $.when(promise).done(function (result)
+        {
+            currentUser = result;
+            $('#currentUserText').text("hallo " + currentUser.firstname + " " + currentUser.lastname);
+        }).fail(function ()
+        {
+            debugger;
+        });
+    }
+
 }

@@ -28,5 +28,11 @@ namespace WebApplication2.AppCode.Handler
         {
             return UserHandler.GetByBarCode(barcode);
         }
+
+        [HttpPost("createNew")]
+        public int Post(User user)
+        {
+            return UserHandler.CreateNewUser(user);
+        }
     }
 }

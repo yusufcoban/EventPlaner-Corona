@@ -1,9 +1,10 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using WebApplication2.AppCode.Handler;
 
 namespace WebApplication3
 {
@@ -29,6 +30,13 @@ namespace WebApplication3
                    Title = "test"
                });
             });
+
+            LoadDefaultSetting();
+        }
+
+        public void LoadDefaultSetting()
+        {
+            EmailHandler.enabled = bool.Parse(Configuration.GetSection("MailsState").Value);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
