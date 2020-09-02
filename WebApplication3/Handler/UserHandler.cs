@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics.Tracing;
 using System.Linq;
 
 using Dapper;
@@ -40,7 +41,18 @@ namespace WebApplication2.AppCode.Handler
             return user;
         }
 
-        public static int CreateNewUser(User user)
+
+        public static User GetByEmail(string email)
+        {
+            string query = connectionBaseUsers + "WHERE email LIKE @email";
+            User user;
+            using (IDbConnection db = new SqlConnection(ConnectionHandler.getConnectionString()))
+                user = db.QueryFirstOrDefault<User>(query, new { email });
+
+            return user;
+        }
+
+        public static string CreateNewUser(User user)
         {
             int newId;
             string query = @"INSERT INTO users 
@@ -58,6 +70,7 @@ namespace WebApplication2.AppCode.Handler
                 barcodeGenerate = RandomString(29);
             }
 
+            user.barcode = barcodeGenerate;
             using (IDbConnection db = new SqlConnection(ConnectionHandler.getConnectionString()))
                 newId = db.ExecuteScalar<int>(query,
                     new
@@ -69,15 +82,20 @@ namespace WebApplication2.AppCode.Handler
                         email = user.email
                     });
 
-            EmailHandler.sentMail("josef1708@gmail.com",
+            _ = EmailHandler.sentMailSentgridAsync("josef1708@gmail.com",
                 "new user generated",
-                "new genereated user:" + user.firstname + " " + user.lastname);
-            EmailHandler.sentMail(user.email, "Your link for event",
-                "Your link for event:" + 
-                "https://webapplication3yco.azurewebsites.net/index.html?barcode=" +
-                barcodeGenerate);
+                "new genereated user:" + user.firstname + " " + user.lastname, user.firstname + " " + user.lastname);
+            sentRegMailToUser(user);
 
-            return newId;
+            return barcodeGenerate;
+        }
+
+        private static void sentRegMailToUser(User user)
+        {
+            _ = EmailHandler.sentMailSentgridAsync(user.email, "Your link for event",
+                "Your link for event:" +
+                "https://webapplication3yco.azurewebsites.net/index.html?barcode=" +
+                user.barcode, user.firstname + " " + user.lastname);
         }
 
         private static Random random = new Random();
@@ -88,6 +106,36 @@ namespace WebApplication2.AppCode.Handler
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-    }
 
+        public static bool mailNotUsed(string email)
+        {
+            bool mailUsed = true;
+            int counter = 0;
+            string sql = @"SELECT * 
+                            FROM {0}
+                            WHERE email=@email;";
+            sql = String.Format(sql, User.getDbName());
+            using (IDbConnection db = new SqlConnection(ConnectionHandler.getConnectionString()))
+                counter = db.QueryFirstOrDefault<int>(sql, new { email });
+            if (counter == 0)
+            {
+                mailUsed = false;
+            }
+
+            return !mailUsed;
+        }
+
+        /**
+         * Sent Link to page
+         */
+        public static void resentMailToUser(string email)
+        {
+            if (mailNotUsed(email) == false)
+            {
+                User user = GetByEmail(email);
+                sentRegMailToUser(user);
+            }
+        }
+
+    }
 }

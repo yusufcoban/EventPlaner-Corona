@@ -37,6 +37,7 @@ namespace WebApplication3
         public void LoadDefaultSetting()
         {
             EmailHandler.enabled = bool.Parse(Configuration.GetSection("MailsState").Value);
+            EmailHandler.apikey = Configuration.GetSection("SENDGRID_APIKEY").Value;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

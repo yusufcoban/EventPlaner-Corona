@@ -1,0 +1,579 @@
+﻿.disabled
+{
+    cursor: not-allowed;
+    color: grey;
+}
+
+#responsiveFrame
+{
+    overflow: visible;
+}
+
+/*********************** custom bootstrap styling ***********************/
+.btn-primary-grey
+{
+    background-color: #707070;
+    border-color: #707070;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+    .btn-primary-grey:hover, .btn-primary-grey:focus, .btn-primary-grey:active
+    {
+        background-color: #444444;
+        border-color: #000;
+        color: #fff;
+    }
+/********************* END custom bootstrap styling *********************/
+
+/************************** x-editable styling *************************/
+a.editable.editable-disabled
+span.editable.editable-disabled
+{
+    cursor: text;
+}
+
+a.editable[href]:not([href='']):not([href='#']),
+a.editable:not(.editable-disabled),
+span.editable:not(.editable-disabled)
+{
+    cursor: pointer;
+}
+
+/* Works only for textareas which are edited inline  */
+textarea.editable + .editable-inline
+{
+    width: 100%;
+    min-height: 175px;
+}
+
+    textarea.editable + .editable-inline form .form-group > div
+    {
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    textarea.editable + .editable-inline form .form-group,
+    textarea.editable + .editable-inline form .form-group .editable-input > textarea
+    {
+        width: 100%;
+    }
+
+        textarea.editable + .editable-inline form .form-group .editable-input
+        {
+            width: 0;
+            -ms-flex-positive: 1;
+            flex-grow: 1;
+        }
+
+        textarea.editable + .editable-inline form .form-group .editable-buttons
+        {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+            textarea.editable + .editable-inline form .form-group .editable-buttons .editable-cancel
+            {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+.editable-input
+{
+    min-width: 170px;
+}
+
+    .editable-input .editable-checklist
+    {
+        max-height: 200px;
+        overflow: auto;
+    }
+
+    .editable-input .select-all, .unselect-all
+    {
+        cursor: pointer;
+        color: #2ba6cb;
+    }
+
+    .editable-input input::-ms-clear
+    {
+        display: none;
+        height: 0;
+        width: 0;
+    }
+
+.editable-empty, .editable-empty:hover, .editable-empty:focus
+{
+    color: black;
+    cursor: pointer;
+    font-style: normal;
+}
+
+/************************ END x-editable styling ***********************/
+
+.keepWhiteSpace
+{
+    white-space: pre;
+}
+
+.pre-wrapped
+{
+    white-space: pre-wrap;
+}
+
+.no-margin-bottom
+{
+    margin-bottom: 0;
+}
+
+.fullscreenMode,
+.hrchannel .onair-spot .top-story-item-2_3 .post-item.fullscreenMode
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #E7E9EA;
+}
+
+.userButtonContainer
+{
+    margin-bottom: 5px;
+}
+
+.jsgrid
+{
+    word-wrap: break-word;
+    color: black;
+    font-size: 12px;
+    line-height: 17.15px;
+}
+
+    .jsgrid input[type="number"]::-webkit-outer-spin-button,
+    .jsgrid input[type="number"]::-webkit-inner-spin-button
+    {
+        -webkit-appearance: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .jsgrid input[type="number"]
+    {
+        -moz-appearance: textfield;
+    }
+
+    .jsgrid .flat-button
+    {
+        margin-left: 2px;
+        padding: 4px 4px;
+        border: none;
+    }
+
+    .jsgrid .floating-right
+    {
+        float: right;
+    }
+
+    .jsgrid div.jsgrid-pager-container,
+    .jsgrid div.jsgrid-pager-container a
+    {
+        font-size: 12px !important;
+    }
+
+/********************* START table *********************/
+table
+{
+    font-size: 12px;
+}
+
+    table.table th
+    {
+        font-size: 12px;
+    }
+
+    table.table td
+    {
+        font-size: 12px;
+    }
+
+    table.clickable tbody
+    {
+        cursor: pointer;
+    }
+
+    table.LDAPSearchResultTable td
+    {
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+
+/********************** END table **********************/
+
+/******************* START accordion *******************/
+#accordion a .panel-title
+{
+    color: #00677f;
+    font-weight: bold;
+}
+
+    #accordion a .panel-title:after
+    {
+        content: "\f107"; /** CSS Code of a minus sign */
+        color: #00677f;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 17px;
+        float: right;
+        margin-left: 5px;
+        line-height: 18px;
+    }
+
+#accordion a .panel-heading
+{
+    background-color: #f5f5f5;
+}
+
+    #accordion a .panel-heading:hover
+    {
+        background-color: #007a93;
+    }
+
+        #accordion a .panel-heading:hover .panel-title, #accordion a .panel-heading:hover .panel-title:after
+        {
+            color: #fff;
+        }
+
+#accordion a:hover, #accordion a:focus
+{
+    text-decoration: none;
+}
+
+#accordion a.collapsed .panel-title:after
+{
+    content: "\f105"; /** CSS Code of a plus sign */
+}
+
+#accordion .panel.disabled
+{
+    color: rgba(0,0,0,0.4);
+}
+
+    #accordion .panel.disabled a
+    {
+        cursor: not-allowed;
+    }
+
+        #accordion .panel.disabled a .panel-title:after
+        {
+            content: none;
+        }
+
+    #accordion .panel.disabled .panel-heading
+    {
+        background-color: #e6e6e6;
+    }
+
+        #accordion .panel.disabled .panel-heading .panel-title
+        {
+            color: #9e9e9e;
+            font-weight: bold;
+        }
+
+/********************* END accordion *********************/
+
+/********************* Start Role Area *******************/
+.roleGroup > h3, .top-story-item .roleGroup > h3, .roleGroupUserAdmin
+{
+    color: #00677f !important; /* Make important to ensure title is displayed with correct color */
+    margin-top: 15px;
+    margin-bottom: 0px;
+    display: inline-block;
+}
+
+.roleGroupUserAdmin
+{
+    font-size: 20px;
+    line-height: 29px;
+}
+/********************* End Role Area ********************/
+
+/****************** Start Tooltip Area ******************/
+.tooltip
+{
+    z-index: 9999;
+}
+
+/******************* END Tooltip Area *******************/
+
+/***************** Start Privacy Policy *****************/
+.privacy-policy-container
+{
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+/****************** END Privacy Policy ******************/
+
+/********************* Start Footer *********************/
+footer .footer-container
+{
+    padding: 10px 15px;
+    background-color: #e6e6e6;
+    margin-bottom: 20px;
+}
+
+/********************** END Footer **********************/
+
+/******************* START error page *******************/
+.error-container
+{
+    background-color: #fff;
+    text-align: center;
+}
+
+    .error-container h1.error-heading
+    {
+        font-size: 100px;
+    }
+
+    .error-container .error-button
+    {
+        color: #fff;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 6px;
+    }
+
+    .error-container .error-link
+    {
+        font-size: 15px;
+        font-style: italic;
+        color: #9e9e9e;
+    }
+/******************** END error page ********************/
+
+/*************** START Cookie notification **************/
+/* Same code used in Marble since it's only a few lines and not worth an own file. */
+#cookieNotification
+{
+    background-color: #00677f;
+    padding: 20px;
+    color: #fff;
+    font-size: 12px;
+    display: none;
+}
+
+#closeCookieNotification
+{
+    display: inline-block;
+    cursor: pointer;
+}
+
+/**************** END Cookie notification ***************/
+
+/********************* START loading indicator *********************/
+.hidden-cloak[v-cloak]
+{
+    display: none !important;
+}
+
+.loader, [v-cloak]
+{
+    position: relative;
+    min-height: 110px;
+    min-width: 110px;
+}
+
+    .loader:before, [v-cloak]:before
+    {
+        content: '';
+        position: absolute;
+        z-index: 998;
+        background-color: #FFFFFF;
+        opacity: 0.6;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        animation: delayedVisiblity 100ms;
+    }
+
+    .loader:after, [v-cloak]:after
+    {
+        content: '';
+        position: absolute;
+        z-index: 999;
+        border: 15px solid #e6e6e6;
+        border-top: 15px solid #00677f;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: loader 1.5s linear infinite, delayedVisiblity 100ms;
+        left: calc(50% - 50px);
+        top: calc(50% - 50px);
+    }
+
+@keyframes delayedVisiblity
+{
+    0%
+    {
+        opacity: 0;
+    }
+
+    99%
+    {
+        opacity: 0;
+    }
+
+    100%
+    {
+        opacity: 1;
+    }
+}
+
+@keyframes loader
+{
+    0%
+    {
+        transform: rotate(0deg);
+    }
+
+    100%
+    {
+        transform: rotate(360deg);
+    }
+}
+/******************* END loading indicator *******************/
+
+.text-wrap
+{
+    word-break: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+}
+
+.normal-text
+{
+    font-weight: normal;
+}
+
+.non-clickable-element
+{
+    cursor: not-allowed;
+}
+
+.icon-button
+{
+    padding: 0;
+    border: none;
+    background: none;
+    color: #00677f;
+    outline: none;
+}
+
+.border-top
+{
+    border-top: 1px solid #d9d9d9;
+}
+
+.skinny-button
+{
+    padding: 0px 5px;
+    margin-bottom: 5px;
+}
+
+.skinny-button-fixed-width
+{
+    padding: 0px 5px;
+    margin-bottom: 5px;
+    width: 25px;
+}
+
+.warning-brown
+{
+    color: sandybrown;
+}
+
+span.warning-brown
+{
+    margin-left: 15px;
+}
+
+.clickable-element
+{
+    cursor: pointer;
+}
+
+.keep-line-breaks
+{
+    white-space: pre-line;
+}
+
+.has-error .jsoneditor
+{
+    border-color: #a94442;
+    border-width: 2px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+small.has-error
+{
+    color: #a94442;
+}
+
+.dropdown-menu .divider
+{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.col-fit
+{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+    .col-fit > .fit-left
+    {
+        margin-left: -1px !important;
+        padding-left: 0px !important;
+    }
+
+    .col-fit > .fit-right
+    {
+        margin-right: -1px !important;
+        padding-right: 0px !important;
+    }
+
+.bs-container a span.glyphicon
+{
+    margin-right: 5px;
+    vertical-align: top;
+}
+
+.bs-container a.selected span.glyphicon-ok, .bs-container a:not(.selected) span.glyphicon-unchecked
+{
+    display: inline-block;
+}
+
+.bs-container a:not(.selected) span.glyphicon-ok, .bs-container a.selected span.glyphicon-unchecked
+{
+    display: none;
+}
+
+.radio-inline
+{
+    padding-top: 0px !important;
+}
+
+    .radio-inline > input[type="radio"]
+    {
+        margin-top: 0px !important;
+    }
