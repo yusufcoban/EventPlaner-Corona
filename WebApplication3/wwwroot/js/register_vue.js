@@ -20,8 +20,8 @@
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" required placeholder="email" v-model="currentUser.email">
                     </div>
-                    <span v-if="emailAlreadyUsed">
-                            <resent-link-component :email="currentUser.email"  v-on:resetemailsent="resetemailsent"></resent-link-component>
+                    <span v-if="getEmailAlreadyUsed">
+                            <resent-link-component :email="currentUser.email"></resent-link-component>
                         </span>
                     <input type="submit" class="btn btn-primary" value="Get personal link!" style="height: 100%;">
                     </input>
@@ -35,9 +35,9 @@
                 </form>
             </div>`,
     methods: {
-        resetemailsent: function ()
+        getEmailAlreadyUsed: function ()
         {
-            this.emailAlreadyUsed = false;
+            return store.getters.getEmailAlreadyUsed;
         },
         validateForm: function ()
         {
@@ -83,11 +83,9 @@
             if ($('#registerForm').valid())
             {
                 this.errorMessageServer = '';
-                var that = this;
                 store.commit('setLoading', true);
-
                 var promise = ajaxUtilities.PostJson(that.uriUserCreate, that.currentUser);
-                emailAlreadyUsed = false;
+                store.commit('setEmailAlreadyUsed', false);
                 $.when(promise).done(function (result)
                 {
                     that.$emit('setbarcode', this, result);
@@ -96,7 +94,7 @@
                     $("#registerForm").validate().showErrors(result.responseJSON.errors);
                     if (result.responseJSON.errors.hasOwnProperty('email'))
                     {
-                        that.emailAlreadyUsed = true;
+                        store.commit('setEmailAlreadyUsed', true);
                     }
                 }).always(function ()
                 {
@@ -107,9 +105,14 @@
     },
     mounted: function ()
     {
+        that = this;
         this.validateForm();
     },
     computed: {
+        emailAlreadyUsed: function ()
+        {
+            return store.getters.getEmailAlreadyUsed;
+        }
     },
     data: function ()
     {
@@ -120,7 +123,7 @@
                 addresse: '',
                 email: '',
             },
-            emailAlreadyUsed: false,
+            that: {},
             errorMessageServer: '',
             uriBarcode: '/User/byBarcode?barcode=',
             uriUserCreate: '/User/createNew',

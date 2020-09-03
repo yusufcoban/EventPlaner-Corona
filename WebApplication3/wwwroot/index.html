@@ -61,10 +61,10 @@
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs">
                                             <li class="nav-item">
-                                                <a class="nav-link active" data-toggle="tab" href="#home">Current order</a>
+                                                <a class="nav-link active" data-toggle="tab" href="#home">Status</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#menu1">Start/change order</a>
+                                                <a class="nav-link" data-toggle="tab" href="#menu1">Change/Start Order</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#menu2">Infos</a>
@@ -98,8 +98,6 @@
                 </div>
             </div>
         </div>
-
-
         <!-- End Page Content -->
     </div>
 
@@ -107,12 +105,17 @@
         var store = new Vuex.Store({
             state: {
                 isLoading: false,
-                barcode: ''
+                barcode: '',
+                emailAlreadyUsed: false
             },
             mutations: {
                 setLoading(state, value)
                 {
                     state.isLoading = value;
+                },
+                setEmailAlreadyUsed(state, value)
+                {
+                    state.emailAlreadyUsed = value;
                 },
                 setBarcode(state, value)
                 {
@@ -133,6 +136,10 @@
                 getBarcode: function (state, getters)
                 {
                     return state.barcode;
+                },
+                getEmailAlreadyUsed: function (state, getters)
+                {
+                    return state.emailAlreadyUsed;
                 }
             }
         });
@@ -242,7 +249,6 @@
                     that.barCodeGiven = true;
                     store.commit('setLoading', true);
 
-
                     var promise = ajaxUtilities.GetJson(that.uriBarcode + barcode);
                     $.when(promise).done(function (result)
                     {
@@ -258,8 +264,6 @@
                 }
             }
         });
-
     </script>
-
 </body>
 </html>

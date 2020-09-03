@@ -12,6 +12,7 @@ namespace WebApplication2.AppCode.Models
         public int maxOrderCount { get; set; }
         [MinLength(4)]
         public string productname { get; set; }
+        public int sortNumber { get; set; }
         public static string getDbName()
         {
             return dbName;

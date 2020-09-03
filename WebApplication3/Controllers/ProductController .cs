@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
 
 using WebApplication2.AppCode.Models;
+using System.Linq;
 
 namespace WebApplication2.AppCode.Handler
 {
@@ -19,7 +20,7 @@ namespace WebApplication2.AppCode.Handler
         [SwaggerResponse(HttpStatusCode.OK, "All products", typeof(IEnumerable<Product>))]
         public IEnumerable<Product> GetAll()
         {
-            return ProductHandler.Get();
+            return ProductHandler.Get().OrderBy(o => o.sortNumber);
         }
 
         [HttpGet("listByUserid")]
@@ -27,17 +28,16 @@ namespace WebApplication2.AppCode.Handler
         [SwaggerResponse(HttpStatusCode.OK, "All products by userid", typeof(IEnumerable<Product_User>))]
         public IEnumerable<Product_User> GetByUserid(int userid)
         {
-            return ProductHandler.GetByUserId(userid);
+            return ProductHandler.GetByUserId(userid).OrderBy(o => ProductHandler.GetById(o.produkteid).sortNumber);
         }
-
 
         [HttpPost("overwriteOrder")]
         [ResponseType(typeof(IEnumerable<Product_User>))]
         [SwaggerResponse(HttpStatusCode.OK, "All products by userid", typeof(IEnumerable<Product_User>))]
-        public string OverWriteOrder(IEnumerable<Product_User> newOrderList, string barcode)
+        public IActionResult OverWriteOrder(IEnumerable<Product_User> newOrderList, string barcode)
         {
             ProductHandler.OverwriteOrder(newOrderList, barcode);
-            return "done";
+            return Ok();
         }
     }
 }

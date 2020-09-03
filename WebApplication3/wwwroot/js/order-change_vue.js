@@ -49,7 +49,6 @@
         },
         orderListById: function (id)
         {
-            var that = this;
             var currentValue = 0;
             _.forEach(that.orderListFromApi, function (value)
             {
@@ -65,7 +64,6 @@
         {
             if (this.user.id != "")
             {
-                var that = this;
                 var promise = ajaxUtilities.GetJson(that.uriUserOrderList);
                 store.commit('setLoading', true);
                 $.when(promise).done(function (result)
@@ -81,9 +79,10 @@
         },
         updateOrder: function ()
         {
-            var that = this;
             var orderListPost = [];
             var orderListUpdate = $('.orderUpdate');
+            store.commit('setLoading', true);
+
             _.forEach(orderListUpdate, function (order)
             {
                 var object = {
@@ -100,7 +99,6 @@
             var promise = ajaxUtilities.PostJson(that.uriUserOrderUpdate, orderListPost);
             $.when(promise).done(function (result)
             {
-                that.$emit('updatedorder');
             }).fail(function (result)
             {
                 if (result.hasOwnProperty('responseJSON'))
@@ -108,16 +106,17 @@
                     that.errorMessageServer = JSON.stringify(result.responseJSON.errors);
                 }
 
+            }).always(function (result)
+            {
                 that.$emit('updatedorder');
+                store.commit('setLoading', false);
             });
-
-
-
         }
     },
     mounted: function ()
     {
         this.preloadData();
+        that = this;
     },
     watch: {
         user: function ()
@@ -143,7 +142,8 @@
     {
         return {
             orderListFromApi: {},
-            errorMessageServer: ""
+            errorMessageServer: "",
+            that: {}
         };
     }
 });
