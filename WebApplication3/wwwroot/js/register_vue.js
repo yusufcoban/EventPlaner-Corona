@@ -1,5 +1,5 @@
 ﻿Vue.component('register-user-component', {
-    template: `<div :class="{loader: isLoading}">
+    template: `<div>
                 <form @submit.prevent="createNewUser" id="registerForm">
                     <div class="form-group">
                         <label for="firstname">Vorname</label>
@@ -84,6 +84,8 @@
             {
                 this.errorMessageServer = '';
                 var that = this;
+                store.commit('setLoading', true);
+
                 var promise = ajaxUtilities.PostJson(that.uriUserCreate, that.currentUser);
                 emailAlreadyUsed = false;
                 $.when(promise).done(function (result)
@@ -98,7 +100,7 @@
                     }
                 }).always(function ()
                 {
-                    that.isLoading = false;
+                    store.commit('setLoading', false);
                 });
             }
         }
@@ -122,8 +124,7 @@
             errorMessageServer: '',
             uriBarcode: '/User/byBarcode?barcode=',
             uriUserCreate: '/User/createNew',
-            barCodeGiven: false,
-            isLoading: false
+            barCodeGiven: false
         };
     }
 });

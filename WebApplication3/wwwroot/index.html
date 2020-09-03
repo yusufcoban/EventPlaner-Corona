@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="loading.css">
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vuex@2.0.0"></script>
+
     <script src="https://unpkg.com/marked@0.3.6"></script>
     <script src="https://unpkg.com/lodash@4.16.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
@@ -29,28 +31,22 @@
     <script src="js/resend-link_vue.js"></script>
 
 </head>
-<style>
-    body
-    {
-        font-family: "Lato", sans-serif
-    }
-
-    .mySlides
-    {
-        display: none
-    }
-</style>
 <body>
 
     <!-- Page content -->
     <div class="w3-content" style="max-width:2000px;margin-top:46px">
         <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
             <div id="editor">
-                <div class="container boxItem" :class="{loader: isLoading}">
+                <div class="container boxItem" :class="{loader: getLoadingIndicator}">
                     <div class="row">
                         <div class="col-sm">
                             <div class="align-self-center">
-                                <h1> Register for event !</h1>
+                                <template v-if="!barCodeGiven">
+                                    <h1>Register for event !</h1>
+                                </template>
+                                <template v-else>
+                                    <h1>Welcome</h1>
+                                </template>
                                 <template v-if="!barCodeGiven">
                                     <br />
                                     <register-user-component v-on:setbarcode="setBarcode">
@@ -68,10 +64,10 @@
                                                 <a class="nav-link active" data-toggle="tab" href="#home">Current order</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#menu1">Start order or change</a>
+                                                <a class="nav-link" data-toggle="tab" href="#menu1">Start/change order</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#menu2">Infos about event!</a>
+                                                <a class="nav-link" data-toggle="tab" href="#menu2">Infos</a>
                                             </li>
                                         </ul>
                                         <!-- Tab panes -->
@@ -91,7 +87,7 @@
                                                 </div>
                                             </div>
                                             <div class="tab-pane container fade" id="menu2">
-                                                <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+                                                <h3>Here you could find infos about the event</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -108,6 +104,39 @@
     </div>
 
     <script>
+        var store = new Vuex.Store({
+            state: {
+                isLoading: false,
+                barcode: ''
+            },
+            mutations: {
+                setLoading(state, value)
+                {
+                    state.isLoading = value;
+                },
+                setBarcode(state, value)
+                {
+                    state.barcode = value;
+                }
+            },
+            actions: {
+                resentLinkToUser({ commit }, email)
+                {
+
+                }
+            },
+            getters: {
+                getLoading: function (state, getters)
+                {
+                    return state.isLoading;
+                },
+                getBarcode: function (state, getters)
+                {
+                    return state.barcode;
+                }
+            }
+        });
+
         new Vue({
             el: "#editor",
             data: {
@@ -138,8 +167,12 @@
                         return false;
                     }
                 },
+                getLoadingIndicator: function ()
+                {
+                    return store.getters.getLoading;
+                }
             },
-            mounted()
+            mounted: function ()
             {
                 // fetch data
                 this.preLoadUser();
@@ -158,21 +191,22 @@
                     this.barcode = test;
                     this.getUserFromApi(this.barcode);
                     location.href = ajaxUtilities.URL_add_parameter(location.href, 'barcode', this.barcode);
+                    store.commit('setBarcode', test);
                 },
                 createNewUser: function ()
                 {
                     var that = this;
                     var promise = ajaxUtilities.PostJson(that.uriUserCreate, that.currentUser);
+                    store.commit('setLoading', true);
                     $.when(promise).done(function (result)
                     {
                         that.barCodeGiven = true;
                         that.getUserFromApi(result);
                     }).fail(function (result)
                     {
-                        alert(JSON.stringify(result.responseJSON.errors));
                     }).always(function ()
                     {
-                        that.isLoading = false;
+                        store.commit('setLoading', false);
                     });
                 },
                 preLoadUser: function ()
@@ -182,11 +216,13 @@
                     if (this.barcode != null && this.barcode !== '')
                     {
                         that.getUserFromApi(this.barcode);
+                        store.commit('setBarcode', this.barcode);
                     }
                 },
                 preLoadProducts: function ()
                 {
                     var that = this;
+                    store.commit('setLoading', true);
                     var promise = ajaxUtilities.GetJson(that.uriProducts);
                     $.when(promise).done(function (result)
                     {
@@ -196,13 +232,17 @@
                         debugger;
                     }).always(function ()
                     {
-                        that.isLoading = false;
+                        store.commit('setLoading', false);
+
                     });
                 },
                 getUserFromApi: function (barcode)
                 {
                     var that = this;
                     that.barCodeGiven = true;
+                    store.commit('setLoading', true);
+
+
                     var promise = ajaxUtilities.GetJson(that.uriBarcode + barcode);
                     $.when(promise).done(function (result)
                     {
@@ -212,7 +252,8 @@
                         debugger;
                     }).always(function ()
                     {
-                        that.isLoading = false;
+                        store.commit('setLoading', false);
+
                     });
                 }
             }

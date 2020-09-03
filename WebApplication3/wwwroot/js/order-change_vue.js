@@ -1,6 +1,6 @@
 ﻿Vue.component('order-change-component', {
     props: ['user', 'products', 'barcode'],
-    template: `<div :class="{loader: isLoading}">
+    template: `<div>
                 <table class="table table-striped">
                               <thead>
                                 <tr>
@@ -67,7 +67,7 @@
             {
                 var that = this;
                 var promise = ajaxUtilities.GetJson(that.uriUserOrderList);
-                this.isLoading = true;
+                store.commit('setLoading', true);
                 $.when(promise).done(function (result)
                 {
                     that.orderListFromApi = result;
@@ -75,7 +75,7 @@
                 {
                 }).always(function ()
                 {
-                    that.isLoading = false;
+                    store.commit('setLoading', false);
                 });
             }
         },
@@ -107,7 +107,7 @@
                 {
                     that.errorMessageServer = JSON.stringify(result.responseJSON.errors);
                 }
-                
+
                 that.$emit('updatedorder');
             });
 
@@ -143,7 +143,6 @@
     {
         return {
             orderListFromApi: {},
-            isLoading: false,
             errorMessageServer: ""
         };
     }

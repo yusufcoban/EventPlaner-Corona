@@ -49,6 +49,11 @@ body
     margin-bottom: 15px;
 }
 
+.orderamount
+{
+    width: 45px;
+}
+
 /* The close button */
 .closebtn
 {

@@ -1,6 +1,6 @@
 ﻿Vue.component('order-view-component', {
     props: ['user', 'products'],
-    template: `<div :class="{loader: isLoading}">
+    template: `<div>
             <div v-if="Object.keys(orderList).length>0">
                 <table class="table table-striped">
                               <thead>
@@ -20,7 +20,12 @@
                  </table>
             </div>
             <div v-else>
-            <span style="background: brown;">No order yet...</span>
+            <br>
+            <br>
+             <div class="alert">
+               
+            No Orders yet. Please order in the second tab.
+            </div>
             </div>
             </div>`,
     methods: {
@@ -45,7 +50,7 @@
             {
                 var that = this;
                 var promise = ajaxUtilities.GetJson(that.uriUserOrderList);
-                this.isLoading = true;
+                store.commit('setLoading', true);
 
                 $.when(promise).done(function (result)
                 {
@@ -54,7 +59,7 @@
                 {
                 }).always(function ()
                 {
-                    that.isLoading = false;
+                    store.commit('setLoading', false);
                 });
             }
         }
@@ -83,8 +88,7 @@
     data: function ()
     {
         return {
-            orderListFromApi: {},
-            isLoading:false
+            orderListFromApi: {}
         };
     }
 });

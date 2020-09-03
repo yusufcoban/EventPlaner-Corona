@@ -8,6 +8,7 @@
         {
             var that = this;
             var promise = ajaxUtilities.GetJson(that.emailApi);
+            store.commit('setLoading', true);
 
             $.when(promise).done(function (result)
             {
@@ -17,6 +18,7 @@
             {
                 that.emailSent = true;
                 that.$emit('resetemailsent');
+                store.commit('setLoading', false);
             });
         }
     },
