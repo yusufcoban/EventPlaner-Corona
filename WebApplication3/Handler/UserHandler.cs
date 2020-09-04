@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Diagnostics.Tracing;
 using System.Linq;
 
 using Dapper;
@@ -94,7 +92,7 @@ namespace WebApplication2.AppCode.Handler
         {
             _ = EmailHandler.sentMailSentgridAsync(user.email, "Your link for event",
                 "Your link for event:" +
-                "https://webapplication3yco.azurewebsites.net/index.html?barcode=" +
+                "*" +
                 user.barcode, user.firstname + " " + user.lastname);
         }
 

@@ -17,7 +17,7 @@ namespace WebApplication2.AppCode.Handler
             {
                 var msg = new SendGridMessage();
 
-                msg.SetFrom(new EmailAddress("yco@kuk-is.de", "Event planer admin"));
+                msg.SetFrom(new EmailAddress("yco@eventplanertestpage.de", "Event planer admin"));
 
                 var recipients = new List<EmailAddress>
                             {

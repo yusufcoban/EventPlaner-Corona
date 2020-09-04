@@ -8,7 +8,6 @@ namespace WebApplication2.AppCode.Models
     public class User
     {
         private static string dbName = "users";
-
         public int id { get; }
         [MinLength(3)]
         public string firstname { get; set; }

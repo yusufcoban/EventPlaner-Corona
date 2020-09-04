@@ -14,7 +14,6 @@ namespace WebApplication2.AppCode.Models
             if (UserHandler.mailNotUsed(email.ToString()))
             {
                 return ValidationResult.Success;
-
             }
             else
             {
